@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>__TITLE__</title>
+  <style>
+__CSS__
+  </style>
+</head>
+<body class="style-__STYLE__">
+  <div class="preview-toolbar">
+    <span>__TITLE__</span>
+    <button type="button" id="edit-toggle" onclick="toggleEdit()">编辑</button>
+    <button type="button" id="reset-edits" onclick="resetEdits()" hidden>重置</button>
+    <button type="button" onclick="document.getElementById('photo-input').click()">上传照片</button>
+    <button type="button" onclick="window.print()">导出 PDF</button>
+    <input id="photo-input" type="file" accept="image/*" onchange="uploadPhoto(event)" hidden>
+  </div>
+  <main class="resume-page" id="resume-page" contenteditable="false">
+    <aside class="resume-photo" id="resume-photo" aria-label="简历照片">
+      <span>照片</span>
+    </aside>
+__CONTENT__
+  </main>
+  <script>
+    const resumePage = document.getElementById("resume-page");
+    const editButton = document.getElementById("edit-toggle");
+    const resetButton = document.getElementById("reset-edits");
+    const storageKey = "resume-edits:" + window.location.pathname;
+    const photoStorageKey = "resume-photo:" + window.location.pathname;
+    const initialHtml = resumePage.innerHTML;
+
+    function getPhotoBox() {
+      return document.getElementById("resume-photo");
+    }
+
+    function ensurePhotoBox() {
+      let box = getPhotoBox();
+      if (!box) {
+        box = document.createElement("aside");
+        box.className = "resume-photo";
+        box.id = "resume-photo";
+        box.setAttribute("aria-label", "简历照片");
+        box.innerHTML = "<span>照片</span>";
+        resumePage.prepend(box);
+      }
+      return box;
+    }
+
+    function loadEdits() {
+      const saved = window.localStorage.getItem(storageKey);
+      if (saved) {
+        resumePage.innerHTML = saved;
+      }
+      const savedPhoto = window.localStorage.getItem(photoStorageKey);
+      if (savedPhoto) {
+        setPhoto(savedPhoto);
+      }
+    }
+
+    function toggleEdit() {
+      const editing = resumePage.getAttribute("contenteditable") === "true";
+      resumePage.setAttribute("contenteditable", editing ? "false" : "true");
+      document.body.classList.toggle("is-editing", !editing);
+      editButton.textContent = editing ? "编辑" : "完成编辑";
+      resetButton.hidden = editing;
+      if (!editing) {
+        resumePage.focus();
+      }
+    }
+
+    function resetEdits() {
+      if (!window.confirm("确定恢复到初始生成版本？")) return;
+      window.localStorage.removeItem(storageKey);
+      window.localStorage.removeItem(photoStorageKey);
+      resumePage.innerHTML = initialHtml;
+      ensurePhotoBox().innerHTML = "<span>照片</span>";
+    }
+
+    resumePage.addEventListener("input", () => {
+      window.localStorage.setItem(storageKey, resumePage.innerHTML);
+    });
+
+    function setPhoto(dataUrl) {
+      const photoBox = ensurePhotoBox();
+      photoBox.innerHTML = "";
+      const image = document.createElement("img");
+      image.src = dataUrl;
+      image.alt = "简历照片";
+      photoBox.appendChild(image);
+    }
+
+    function uploadPhoto(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = String(reader.result);
+        window.localStorage.setItem(photoStorageKey, dataUrl);
+        setPhoto(dataUrl);
+      };
+      reader.readAsDataURL(file);
+      event.target.value = "";
+    }
+
+    loadEdits();
+  </script>
+</body>
+</html>

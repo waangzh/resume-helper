@@ -1,0 +1,7 @@
+interface:
+  display_name: "学习补强"
+  short_description: "把能力短板转成学习路线和行动计划"
+  default_prompt: "Use $learning-plan to turn my job-match gaps into a short, practical learning plan."
+
+policy:
+  allow_implicit_invocation: true

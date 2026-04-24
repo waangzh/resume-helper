@@ -1,0 +1,7 @@
+interface:
+  display_name: "简历解析"
+  short_description: "结构化解析简历、项目资料与证据来源"
+  default_prompt: "Use $resume-intake to parse my resume and project materials into a CandidateProfile."
+
+policy:
+  allow_implicit_invocation: true

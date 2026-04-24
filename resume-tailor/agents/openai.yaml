@@ -1,0 +1,7 @@
+interface:
+  display_name: "简历定制"
+  short_description: "按规范生成岗位导向完整简历内容"
+  default_prompt: "Use $resume-tailor to create a standards-compliant role-specific resume from my CandidateProfile and target JobProfile."
+
+policy:
+  allow_implicit_invocation: true

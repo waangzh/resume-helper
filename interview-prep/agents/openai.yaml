@@ -1,0 +1,7 @@
+interface:
+  display_name: "面试准备"
+  short_description: "按岗位、简历和短板生成面试追问"
+  default_prompt: "Use $interview-prep to generate targeted interview questions from my tailored resume."
+
+policy:
+  allow_implicit_invocation: true

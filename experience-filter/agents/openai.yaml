@@ -1,0 +1,7 @@
+interface:
+  display_name: "经历筛选"
+  short_description: "按岗位筛选、排序和弱化候选人经历"
+  default_prompt: "Use $experience-filter to select the strongest experiences for my target role."
+
+policy:
+  allow_implicit_invocation: true
