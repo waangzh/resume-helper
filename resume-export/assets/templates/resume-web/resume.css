@@ -22,8 +22,8 @@ body {
   background: var(--canvas);
   color: var(--text);
   font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", Arial, sans-serif;
-  font-size: 13px;
-  line-height: 1.55;
+  font-size: 13.5px;
+  line-height: 1.62;
 }
 
 .preview-toolbar {
@@ -82,7 +82,7 @@ body.is-editing .resume-page {
   box-shadow: 0 12px 30px rgba(31, 40, 55, 0.16);
   margin: 24px auto;
   min-height: 297mm;
-  padding: 17mm 18mm;
+  padding: 16mm 17mm;
   position: relative;
   width: 210mm;
 }
@@ -98,8 +98,8 @@ body.is-editing .resume-page {
   justify-content: center;
   overflow: hidden;
   position: absolute;
-  right: 18mm;
-  top: 17mm;
+  right: 17mm;
+  top: 16mm;
   width: 24mm;
 }
 
@@ -125,14 +125,14 @@ body.is-editing .resume-page {
   font-weight: 700;
   letter-spacing: 0;
   line-height: 1.2;
-  margin: 0 0 8px;
-  padding-bottom: 8px;
+  margin: 0 0 7px;
+  padding-bottom: 7px;
 }
 
 .resume-contact {
   color: var(--muted);
-  font-size: 12.5px;
-  margin: 0 0 8px;
+  font-size: 13px;
+  margin: 0 0 12px;
 }
 
 .resume-note {
@@ -142,45 +142,45 @@ body.is-editing .resume-page {
 }
 
 .resume-section {
-  margin-top: 14px;
+  margin-top: 16px;
 }
 
 .resume-section.is-first {
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .resume-section-heading {
-  margin: 0 0 8px;
+  margin: 0 0 9px;
 }
 
 .resume-section-title {
   border-bottom: 1px solid var(--rule);
   color: var(--accent);
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 1.35;
-  margin: 0 0 8px;
-  padding: 2px 0 5px;
+  margin: 0 0 9px;
+  padding: 2px 0 6px;
 }
 
 .resume-subtitle {
   color: var(--text);
   font-size: 14px;
   font-weight: 700;
-  margin: 8px 0 4px;
+  margin: 9px 0 4px;
 }
 
 .resume-paragraph {
-  margin: 4px 0;
+  margin: 5px 0;
 }
 
 .resume-list {
-  margin: 4px 0 8px 18px;
+  margin: 5px 0 9px 18px;
   padding: 0;
 }
 
 .resume-list li {
-  margin: 2px 0;
+  margin: 3px 0;
   padding-left: 2px;
 }
 

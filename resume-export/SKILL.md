@@ -8,7 +8,7 @@ description: 简历文件导出与即时预览 Skill。用于把 TailoredResume 
 ## 流程
 
 1. 读取 `TailoredResume` 和用户指定格式；未指定时默认生成 HTML 预览。
-2. 读取 `references/export-formats.md` 确定格式、命名、排版和失败兜底；需要参考图风格时读取 `references/visual-template-guide.md`。
+2. 读取 `references/export-formats.md` 确定格式、命名、排版和失败兜底；读取 `references/layout-quality-constraints.md` 控制字号、行高、留白、照片位和内容密度；需要参考图风格时读取 `references/visual-template-guide.md`。
 3. 生成完整简历正文，不只输出后续材料片段。
 4. 优先生成可打开的 `resume.html` 供即时预览；HTML 页面必须包含“编辑”“重置”“上传照片”和“导出 PDF”按钮，支持页面内全部简历文字实时编辑、上传真实照片后再打印导出。
 5. 输出 `ResumeDocument`，包含文件路径、格式说明、生成时间和待确认项。
@@ -35,6 +35,7 @@ description: 简历文件导出与即时预览 Skill。用于把 TailoredResume 
 ## 资源
 
 - 读取 `references/export-formats.md` 获取格式策略。
+- 读取 `references/layout-quality-constraints.md` 获取 HTML 版式质量和验收约束。
 - 读取 `references/visual-template-guide.md` 获取参考图沉淀的版式规则。
 - 可使用 `assets/templates/resume.md` 作为内部草稿模板，但不要把 `.md` 作为最终简历交付物。
 - 使用 `assets/templates/resume-web/` 生成静态 HTML/CSS 预览。

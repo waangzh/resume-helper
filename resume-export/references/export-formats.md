@@ -29,6 +29,7 @@
 ## HTML 版式
 
 - A4 页面，常规页边距或窄页边距。
+- 生成时必须同时满足 `references/layout-quality-constraints.md` 中的字号、行高、留白、照片位和内容密度约束。
 - 中文字体优先微软雅黑、苹方、Noto Sans CJK 或等价系统字体。
 - 正文紧凑易读，标题层级清晰。
 - 项目 bullet 使用短句，避免多级嵌套。
