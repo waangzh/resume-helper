@@ -1,6 +1,6 @@
 ---
 name: experience-filter
-description: 经历归因与筛选 Skill。用于根据目标岗位画像和 CandidateProfile 判断哪些项目、实习、竞赛或课程经历应突出、保留、弱化、合并或追问。适合“帮我选哪些经历写进 Java 后端简历”“判断这些经历和岗位是否匹配”等任务。
+description: 经历筛选与排序 Skill。用于根据目标岗位画像和 CandidateProfile 判断项目、实习、竞赛或课程经历应突出、保留、弱化、合并、删除或追问。适合“帮我选项目写进简历”“删减经历”“经历排序”“判断这些经历和岗位是否匹配”等任务。
 ---
 
 # Experience Filter

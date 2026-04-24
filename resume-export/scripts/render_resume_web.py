@@ -9,7 +9,16 @@ import re
 from pathlib import Path
 
 
-STYLE_CHOICES = ("plain", "classic-blue", "teal-ribbon", "light-blue-band")
+STYLE_CHOICES = (
+    "plain",
+    "classic-blue",
+    "teal-ribbon",
+    "light-blue-band",
+    "emerald-clean",
+    "burgundy-formal",
+    "graphite-amber",
+    "minimal-gray",
+)
 
 
 def inline_md(text: str) -> str:
@@ -19,13 +28,129 @@ def inline_md(text: str) -> str:
     return escaped
 
 
+def contact_items(line: str) -> list[str]:
+    return [item.strip() for item in re.split(r"\s*(?:\||\t| {2,})\s*", line) if item.strip()]
+
+
+def split_label_value(text: str) -> tuple[str, str] | None:
+    for separator in ("\uff1a", ":"):
+        if separator in text:
+            label, value = text.split(separator, 1)
+            label = label.strip().strip("*").strip()
+            value = value.strip().strip("*").strip()
+            if label and value:
+                return label, value
+    return None
+
+
+def strip_wrapping_bold(text: str) -> str:
+    stripped = text.strip()
+    if stripped.startswith("**") and stripped.endswith("**") and len(stripped) >= 4:
+        return stripped[2:-2].strip()
+    return stripped
+
+
+def display_contact_label(label: str) -> str:
+    compact = re.sub(r"\s+", "", label)
+    if len(compact) == 2:
+        return f"{compact[0]}    {compact[1]}："
+    return f"{compact}："
+
+
+def contact_icon(label: str) -> str:
+    compact = re.sub(r"\s+", "", label)
+    icons = {
+        "年龄": "◉",
+        "籍贯": "◆",
+        "电话": "☎",
+        "性别": "♂",
+        "工作年限": "▣",
+        "邮箱": "✉",
+    }
+    return icons.get(compact, "•")
+
+
+def intent_html(items: list[str]) -> str:
+    first = split_label_value(items[0])
+    if first:
+        label, value = first
+        values = [value, *items[1:]]
+        label_html = f"<strong>{inline_md(label)}：</strong>"
+    else:
+        values = items
+        label_html = ""
+
+    content: list[str] = ['    <p class="resume-intent">', f"      {label_html}"]
+    for index, value in enumerate(values):
+        if index:
+            content.append('<span class="resume-intent-separator">|</span>')
+        content.append(f"<span>{inline_md(value)}</span>")
+    content.append("    </p>")
+    return "".join(content)
+
+
+def contact_item_html(item: str) -> str:
+    split = split_label_value(item)
+    if split:
+        label, value = split
+        return (
+            '<span class="resume-contact-item">'
+            f'<span class="resume-contact-icon" aria-hidden="true">{contact_icon(label)}</span>'
+            f'<span class="resume-contact-label">{inline_md(display_contact_label(label))}</span>'
+            f'<span class="resume-contact-value">{inline_md(value)}</span>'
+            "</span>"
+        )
+    return f'<span class="resume-contact-item">{inline_md(item)}</span>'
+
+
+def is_education_section(title: str) -> bool:
+    return "教育" in title
+
+
+def education_summary_html(line: str) -> str:
+    items = contact_items(line)
+    if len(items) >= 4:
+        school, major, degree, period = [strip_wrapping_bold(item) for item in items[:4]]
+        right = f"{major}（{degree}）"
+        cells = (period, school, right)
+    elif len(items) >= 3:
+        cells = tuple(strip_wrapping_bold(item) for item in items[:3])
+    else:
+        cells = (line.strip(), "", "")
+    return (
+        '      <div class="resume-education-summary">'
+        f'<span>{inline_md(cells[0])}</span>'
+        f'<strong>{inline_md(cells[1])}</strong>'
+        f'<strong>{inline_md(cells[2])}</strong>'
+        "</div>"
+    )
+
+
+def education_detail_html(line: str, class_name: str) -> str:
+    text = line.strip()
+    split = split_label_value(text)
+    if split:
+        label, value = split
+        return (
+            f'      <p class="resume-education-detail {class_name}">'
+            f'<strong>{inline_md(label)}：</strong> {inline_md(value)}'
+            "</p>"
+        )
+    return f'      <p class="resume-education-detail {class_name}">{inline_md(text)}</p>'
+
+
 def markdown_to_resume_html(markdown: str) -> tuple[str, str]:
     title = "简历"
     parts: list[str] = []
     in_list = False
     section_open = False
+    profile_open = False
     seen_section = False
     after_title = False
+    contact_open = False
+    current_section = ""
+    education_line_count = 0
+    intent_written = False
 
     def close_list() -> None:
         nonlocal in_list
@@ -40,25 +165,66 @@ def markdown_to_resume_html(markdown: str) -> tuple[str, str]:
             parts.append("    </section>")
             section_open = False
 
+    def close_profile() -> None:
+        nonlocal profile_open
+        if profile_open:
+            close_contact()
+            parts.append("      </div>")
+            parts.append("    </header>")
+            profile_open = False
+
+    def close_contact() -> None:
+        nonlocal contact_open
+        if contact_open:
+            parts.append("      </div>")
+            contact_open = False
+
+    def append_contact(line: str) -> None:
+        nonlocal contact_open, intent_written
+        items = contact_items(line)
+        if not items:
+            return
+        first = split_label_value(items[0])
+        if first and first[0] == "求职意向" and not intent_written:
+            close_contact()
+            parts.append(intent_html(items).replace("    <p", "      <p", 1))
+            intent_written = True
+            return
+        if not contact_open:
+            parts.append('      <div class="resume-contact">')
+            contact_open = True
+        for item in items:
+            parts.append(f"        {contact_item_html(item)}")
+
     for raw in markdown.splitlines():
         line = raw.rstrip()
         if not line:
             close_list()
             continue
         if line.startswith("# "):
+            close_profile()
+            close_contact()
             close_section()
             title = line[2:].strip() or title
-            parts.append(f'    <h1 class="resume-title">{inline_md(title)}</h1>')
+            parts.append('    <header class="resume-profile">')
+            parts.append('      <aside class="resume-photo" id="resume-photo" aria-label="简历照片" contenteditable="false"></aside>')
+            parts.append('      <div class="resume-profile-main">')
+            parts.append(f'        <h1 class="resume-title">{inline_md(title)}</h1>')
+            profile_open = True
             after_title = True
         elif line.startswith("## "):
+            close_profile()
+            close_contact()
             close_section()
+            current_section = line[3:].strip()
+            education_line_count = 0
             section_class = "resume-section is-first" if not seen_section else "resume-section"
             parts.append(f'    <section class="{section_class}">')
             section_open = True
             seen_section = True
             after_title = False
             parts.append('      <div class="resume-section-heading">')
-            parts.append(f'        <h2 class="resume-section-title">{inline_md(line[3:].strip())}</h2>')
+            parts.append(f'        <h2 class="resume-section-title">{inline_md(current_section)}</h2>')
             parts.append("      </div>")
         elif line.startswith("### "):
             close_list()
@@ -77,12 +243,26 @@ def markdown_to_resume_html(markdown: str) -> tuple[str, str]:
         else:
             close_list()
             if after_title and not section_open:
-                parts.append(f'    <p class="resume-contact">{inline_md(line.strip())}</p>')
-                after_title = False
+                append_contact(line.strip())
             else:
                 after_title = False
-                parts.append(f'      <p class="resume-paragraph">{inline_md(line.strip())}</p>')
+                if is_education_section(current_section):
+                    education_line_count += 1
+                    clean_line = line.strip()
+                    clean_probe = clean_line.lstrip("*")
+                    if education_line_count == 1:
+                        parts.append(education_summary_html(clean_line))
+                    elif clean_probe.startswith("专业成绩") or clean_probe.startswith("成绩"):
+                        parts.append(education_detail_html(clean_line, "is-score"))
+                    elif clean_probe.startswith("主修课程") or clean_probe.startswith("相关课程"):
+                        parts.append(education_detail_html(clean_line, "is-courses"))
+                    else:
+                        parts.append(f'      <p class="resume-paragraph">{inline_md(clean_line)}</p>')
+                else:
+                    parts.append(f'      <p class="resume-paragraph">{inline_md(line.strip())}</p>')
 
+    close_profile()
+    close_contact()
     close_section()
     return title, "\n".join(parts)
 

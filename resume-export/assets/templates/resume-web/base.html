@@ -18,9 +18,6 @@ __CSS__
     <input id="photo-input" type="file" accept="image/*" onchange="uploadPhoto(event)" hidden>
   </div>
   <main class="resume-page" id="resume-page" contenteditable="false">
-    <aside class="resume-photo" id="resume-photo" aria-label="简历照片">
-      <span>照片</span>
-    </aside>
 __CONTENT__
   </main>
   <script>
@@ -37,14 +34,23 @@ __CONTENT__
 
     function ensurePhotoBox() {
       let box = getPhotoBox();
+      const profile = resumePage.querySelector(".resume-profile");
       if (!box) {
         box = document.createElement("aside");
         box.className = "resume-photo";
         box.id = "resume-photo";
         box.setAttribute("aria-label", "简历照片");
-        box.innerHTML = "<span>照片</span>";
-        resumePage.prepend(box);
+        box.setAttribute("contenteditable", "false");
+        box.innerHTML = "";
+        if (profile) {
+          profile.prepend(box);
+        } else {
+          resumePage.prepend(box);
+        }
+      } else if (profile && box.parentElement !== profile) {
+        profile.prepend(box);
       }
+      box.setAttribute("contenteditable", "false");
       return box;
     }
 
@@ -53,6 +59,7 @@ __CONTENT__
       if (saved) {
         resumePage.innerHTML = saved;
       }
+      ensurePhotoBox();
       const savedPhoto = window.localStorage.getItem(photoStorageKey);
       if (savedPhoto) {
         setPhoto(savedPhoto);
@@ -75,7 +82,7 @@ __CONTENT__
       window.localStorage.removeItem(storageKey);
       window.localStorage.removeItem(photoStorageKey);
       resumePage.innerHTML = initialHtml;
-      ensurePhotoBox().innerHTML = "<span>照片</span>";
+      ensurePhotoBox().innerHTML = "";
     }
 
     resumePage.addEventListener("input", () => {

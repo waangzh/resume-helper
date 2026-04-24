@@ -1,6 +1,6 @@
 ---
 name: match-diagnosis
-description: 岗位匹配诊断 Skill。用于比较 JobProfile 与 TailoredResume/CandidateProfile，输出已命中能力、表达不足、真实能力缺口、风险项和下一步补强建议。适合“分析我的简历和岗位匹配度”“我还缺什么”“给出补强建议”等任务。
+description: 岗位匹配诊断 Skill。用于比较 JobProfile 与 TailoredResume/CandidateProfile，判断简历命中点、表达不足、真实能力缺口和面试风险。适合“分析简历和岗位匹配度”“这份简历哪里不匹配”“找出岗位差距和风险”等任务。
 ---
 
 # Match Diagnosis
