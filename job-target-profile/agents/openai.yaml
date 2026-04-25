@@ -1,7 +1,0 @@
-interface:
-  display_name: "岗位画像"
-  short_description: "提取岗位职责、技能、关键词与面试方向"
-  default_prompt: "Use $job-target-profile to analyze this target role or JD into a structured JobProfile."
-
-policy:
-  allow_implicit_invocation: true

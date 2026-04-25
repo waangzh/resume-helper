@@ -1,7 +1,0 @@
-interface:
-  display_name: "OfferPilot 总控"
-  short_description: "先生成简历，再按需准备求职材料"
-  default_prompt: "Use $offerpilot-orchestrator to generate or optimize my editable resume first, then prepare follow-up job materials if needed."
-
-policy:
-  allow_implicit_invocation: true

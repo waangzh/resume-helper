@@ -1,7 +1,0 @@
-interface:
-  display_name: "匹配诊断"
-  short_description: "分析岗位匹配、表达不足与真实缺口"
-  default_prompt: "Use $match-diagnosis to compare my resume with a target JobProfile and identify gaps."
-
-policy:
-  allow_implicit_invocation: true

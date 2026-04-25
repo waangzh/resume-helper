@@ -1,7 +1,0 @@
-interface:
-  display_name: "简历导出"
-  short_description: "生成可编辑 HTML 简历预览，并按需导出 PDF"
-  default_prompt: "Use $resume-export to export my tailored resume as an editable HTML preview and only generate PDF if requested."
-
-policy:
-  allow_implicit_invocation: true

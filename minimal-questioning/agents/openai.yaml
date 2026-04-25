@@ -1,7 +1,0 @@
-interface:
-  display_name: "最小追问"
-  short_description: "只追问影响求职材料质量的关键缺口"
-  default_prompt: "Use $minimal-questioning to ask only the essential follow-up questions for this job-search task."
-
-policy:
-  allow_implicit_invocation: true
