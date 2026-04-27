@@ -46,51 +46,35 @@
    - 浏览器偏好（Chrome / Edge）
    - 信任模式（敏感操作是否自动执行）
 
-### 调用方式
+### 使用方式
 
-```bash
-autoclaw task=”任务描述”
-```
+直接用自然语言描述任务，agent 会自动调用 autoglm-browser-agent 执行。
 
 ### 关键规则
 
 | 规则 | 说明 |
 |------|------|
-| task 原样照抄 | 必须使用用户原话，不能擅自扩展或改写 |
-| 数量默认值 | 用户未指定数量时，默认收集 5 个 |
-| 结果获取 | Read `~/.openclaw-autoclaw/browser_result_{session_id}.md` |
-| 每轮限制 | 只能调用一次，不能自动重试 |
-| 超时设置 | shell timeout = 7200 秒 |
-| 禁止 poll | 不使用 process poll 获取结果 |
+| 明确平台 | 指定招聘平台（BOSS直聘、智联招聘等） |
+| 明确岗位 | 包含岗位名称和类型（实习/校招/社招） |
+| 明确数量 | 指定收集多少个岗位，未指定则默认 5 个 |
+| 明确字段 | 列出需要收集的信息（名称、公司、城市、薪资、学历、链接等） |
+| 可选筛选 | 可指定城市、学历、工作经验等筛选条件 |
 
-### 岗位搜索示例
-
-```bash
-# 搜索技术岗
-autoclaw task=”打开BOSS直聘搜索Java后端实习岗位，收集前5个岗位的名称、公司、城市、薪资”
-
-# 搜索通用岗
-autoclaw task=”打开BOSS直聘搜索管培生校招岗位，收集前5个岗位的名称、公司、城市、学历要求”
-
-# 投递岗位
-autoclaw task=”打开岗位页面 https://www.zhipin.com/job_detail/xxx，填写投递表单并上传简历”
-```
-
-### 结果处理流程
+### 岗位搜索提示词示例
 
 ```
-1. 执行 autoclaw 命令，等待结束
-2. 从 shell 输出提取 Result: <文件路径>
-3. 用 Read 工具读取结果文件
-4. 从结果中提取岗位信息
-5. 写入 Excel 清单
+使用 autoglm-browser-agent 打开BOSS直聘搜索Java后端实习岗位，收集前5个岗位的名称、公司、城市、薪资、学历要求和岗位详情页链接
+
+使用 autoglm-browser-agent 打开BOSS直聘搜索管培生校招岗位，工作地点选择北京、上海，收集前8个岗位的名称、公司、城市、学历要求和岗位详情页链接
+
+使用 autoglm-browser-agent 打开岗位页面 https://www.zhipin.com/job_detail/xxx，填写投递表单并上传简历
 ```
 
 ### 遇到登录/验证码
 
 1. 浏览器暂停，返回 `[INTERACT_REQUIRED]`
 2. 告知用户手动完成登录
-3. 用户确认后，带 `session_id` 和 `tab_id` 继续
+3. 用户确认后继续执行
 
 ---
 
