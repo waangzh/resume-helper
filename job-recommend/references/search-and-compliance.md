@@ -1,5 +1,42 @@
 # 岗位搜索与合规
 
+## 浏览器操作工具
+
+### 推荐工具（优先使用）
+
+| 工具 | 功能 | 调用方式 | 适用场景 |
+|------|------|----------|----------|
+| `autoglm-browser-agent` | 智能浏览器自动化 | `autoclaw task=”...”` | 岗位搜索、打开页面、表单填写、投递操作 |
+| `autoglm-websearch` | 网络搜索 | `python websearch.py “关键词”` | 岗位关键词搜索 |
+| `autoglm-open-link` | 打开链接获取内容 | `python open-link.py “URL”` | 读取岗位详情页正文 |
+
+**autoglm-browser-agent 使用要点：**
+- 任务描述必须包含明确数量（默认5）
+- 需要登录时会让用户手动操作，然后继续
+- 每轮对话只调用一次，等待结果返回
+- 详细使用说明见该 skill 的 SKILL.md
+
+### 替代工具（无 autoglm 时使用）
+
+| 工具 | 功能 | 适用场景 |
+|------|------|----------|
+| `mcp__tavily__tavily_search` | 网页搜索 | 岗位关键词搜索 |
+| `WebSearch` | 网页搜索 | 岗位关键词搜索 |
+| `WebFetch` | 获取网页内容 | 读取岗位详情页 |
+| `mcp__chrome-devtools__*` | Chrome DevTools 操作 | 浏览器自动化、表单填写 |
+| `mcp__plugin_playwright_playwright__*` | Playwright 浏览器操作 | 浏览器自动化、投递流程 |
+| `agent-browser` skill | 浏览器自动化 | 表单填写、投递操作 |
+
+### 无浏览器工具时
+
+若以上工具均不可用：
+1. 输出搜索关键词和筛选规则
+2. 提供平台入口链接
+3. 生成待用户自行确认的岗位清单模板
+4. 不编造岗位或链接
+
+---
+
 ## 搜索策略
 
 | 步骤 | 操作 | 说明 |
