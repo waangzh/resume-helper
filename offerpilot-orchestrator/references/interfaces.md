@@ -18,11 +18,13 @@
 
 - `target_role`: 岗位名称。
 - `role_type`: 实习、校招、社招或待确认。
+- `role_category`: 岗位类别，技术岗或通用岗。
 - `responsibilities`: 常见职责。
 - `core_skills`: 核心技能要求。
 - `bonus_skills`: 加分项。
 - `keywords`: 高频关键词。
 - `interview_focus`: 常见面试方向。
+- `suitable_experiences`: 适合的经历类型（用于经历筛选）。
 - `source`: 用户输入、JD、公开资料或推断。
 
 ## CandidateProfile
@@ -38,9 +40,13 @@
 
 - `basic_info`
 - `education`
-- `skills`
-- `projects`
-- `internships_or_competitions`
+- `role_category`: 岗位类别，技术岗或通用岗。
+- `skills`: 技术技能（技术岗）或技能与证书（通用岗）。
+- `projects`: 项目经历（技术岗）。
+- `internships`: 实习经历。
+- `campus_experience`: 校园经历（通用岗），学生会/社团/班级职务。
+- `social_practice`: 社会实践（通用岗），志愿服务/兼职/活动。
+- `competitions`: 竞赛奖项。
 - `target_role_title`
 - `resume_summary`: 可选；仅在能提供具体岗位价值时使用。
 - `layout`: 一页优先、模块顺序、重点经历排序。

@@ -111,6 +111,18 @@ def is_award_section(title: str) -> bool:
     return "竞赛" in title or "奖项" in title
 
 
+def is_campus_section(title: str) -> bool:
+    return "校园" in title
+
+
+def is_practice_section(title: str) -> bool:
+    return "社会" in title or "实践" in title
+
+
+def is_skill_cert_section(title: str) -> bool:
+    return "技能" in title and "证书" in title
+
+
 def award_item_html(line: str) -> str:
     """渲染竞赛奖项为左-中-右布局，全部加粗"""
     items = contact_items(line)
@@ -293,7 +305,12 @@ def markdown_to_resume_html(markdown: str) -> tuple[str, str]:
         elif line.startswith("### "):
             close_list()
             after_title = False
-            parts.append(project_title_html(line[4:].strip()))
+            title_text = line[4:].strip()
+            # 校园经历、社会实践使用项目标题格式
+            if is_campus_section(current_section) or is_practice_section(current_section):
+                parts.append(project_title_html(title_text))
+            else:
+                parts.append(project_title_html(title_text))
         elif line.startswith("- "):
             after_title = False
             # 竞赛奖项部分使用特殊布局
