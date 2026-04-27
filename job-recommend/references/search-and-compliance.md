@@ -32,7 +32,27 @@
 
 ---
 
-## autoglm-browser-agent 使用说明
+## 默认工具：autoglm-websearch
+
+快速关键词搜索，无需登录，响应速度快。
+
+**使用方式：**
+
+直接用自然语言描述任务，agent 会自动调用 autoglm-websearch 执行。
+
+**岗位搜索提示词示例：**
+
+```
+使用 autoglm-websearch 搜索 Java后端实习岗位 招聘信息，获取岗位名称、公司、城市、薪资、学历要求和岗位详情页链接
+
+使用 autoglm-websearch 搜索 管培生校招岗位 北京上海 招聘信息，获取前5个岗位的详细信息
+```
+
+---
+
+## 进阶工具：autoglm-browser-agent
+
+当 autoglm-websearch 不可用，或需要完整浏览器操作（如投递表单填写）时使用。
 
 详细文档位于：`~/.openclaw-autoclaw/skills/autoglm-browser-agent/SKILL.md`
 
@@ -60,13 +80,9 @@
 | 明确字段 | 列出需要收集的信息（名称、公司、城市、薪资、学历、链接等） |
 | 可选筛选 | 可指定城市、学历、工作经验等筛选条件 |
 
-### 岗位搜索提示词示例
+### 投递场景示例
 
 ```
-使用 autoglm-browser-agent 打开BOSS直聘搜索Java后端实习岗位，收集前5个岗位的名称、公司、城市、薪资、学历要求和岗位详情页链接
-
-使用 autoglm-browser-agent 打开BOSS直聘搜索管培生校招岗位，工作地点选择北京、上海，收集前5个岗位的名称、公司、城市、学历要求和岗位详情页链接
-
 使用 autoglm-browser-agent 打开岗位页面 https://www.zhipin.com/job_detail/xxx，填写投递表单并上传简历
 ```
 
@@ -82,7 +98,6 @@
 
 | 工具 | 适用场景 |
 |------|----------|
-| autoglm-websearch | 快速关键词搜索，无需登录 |
 | autoglm-open-link | 读取岗位详情页正文 |
 
 ---
