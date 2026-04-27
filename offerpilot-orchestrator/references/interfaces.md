@@ -64,7 +64,7 @@
 - `format_profile`: 页边距、字体、字号、标题层级、行距。
 - `target_role`: 对应岗位版本。
 - `generated_at`
-- `pending_confirmations`: 影响简历真实性或完整性的待确认项。
+- `pending_confirmations`: 影响简历真实性或完整性的待确认项，**不在 HTML 中渲染**，只在交付摘要中展示。
 
 文件命名固定为 `{姓名}-{岗位}-简历.{ext}`；默认扩展名为 `.html`，用户明确要求 PDF 时额外生成 `.pdf`。姓名缺失时用 `候选人`，岗位缺失时用 `目标岗位`。
 
