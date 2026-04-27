@@ -6,19 +6,19 @@
 
 | 步骤 | 操作 | 示例 |
 |------|------|------|
-| 1 | 岗位名 + 类型 | "Java后端 实习" |
-| 2 | 加入城市 | "Java后端 实习 北京" |
-| 3 | 加入核心技术 | "Java后端 实习 北京 Spring" |
-| 4 | 指定平台 | "Java后端 实习 北京 Spring BOSS直聘" |
+| 1 | 岗位名 + 类型 | “Java后端 实习” |
+| 2 | 加入城市 | “Java后端 实习 北京” |
+| 3 | 加入核心技术 | “Java后端 实习 北京 Spring” |
+| 4 | 指定平台 | “Java后端 实习 北京 Spring BOSS直聘” |
 
 ### 通用岗搜索策略
 
 | 步骤 | 操作 | 示例 |
 |------|------|------|
-| 1 | 岗位名 + 变体名 | "管培生 OR 管理培训生 OR 储备干部" |
-| 2 | 加入类型 + 城市 | "管培生 校招 北京" |
-| 3 | 加入行业偏好 | "管培生 校招 北京 互联网" |
-| 4 | 指定平台 | "管培生 校招 北京 BOSS直聘" |
+| 1 | 岗位名 + 变体名 | “管培生 OR 管理培训生 OR 储备干部” |
+| 2 | 加入类型 + 城市 | “管培生 校招 北京” |
+| 3 | 加入行业偏好 | “管培生 校招 北京 互联网” |
+| 4 | 指定平台 | “管培生 校招 北京 BOSS直聘” |
 
 **通用岗岗位名称变体：**
 
@@ -32,51 +32,96 @@
 
 ---
 
-## 浏览器操作工具
+## autoglm-browser-agent 使用说明
 
-### 推荐工具（优先使用）
+详细文档位于：`~/.openclaw-autoclaw/skills/autoglm-browser-agent/SKILL.md`
 
-| 工具 | 功能 | 调用方式 | 适用场景 |
-|------|------|----------|----------|
-| `autoglm-browser-agent` | 智能浏览器自动化 | `autoclaw task=”...”` | 岗位搜索、打开页面、表单填写、投递操作 |
-| `autoglm-websearch` | 网络搜索 | `python websearch.py “关键词”` | 岗位关键词搜索 |
-| `autoglm-open-link` | 打开链接获取内容 | `python open-link.py “URL”` | 读取岗位详情页正文 |
+### 首次使用准备
 
-**autoglm-browser-agent 使用要点：**
-- 任务描述必须包含明确数量（默认5）
-- 需要登录时会让用户手动操作，然后继续
-- 每轮对话只调用一次，等待结果返回
-- 详细使用说明见该 skill 的 SKILL.md
+1. **安装浏览器扩展**：
+   - Chrome：[AutoGLM 扩展](https://chromewebstore.google.com/detail/autoglm/jelniggicmclhfgnlapbkgfibmgelfnp)
+   - Edge：[AutoGLM 扩展](https://microsoftedge.microsoft.com/addons/detail/autoglm/ljlnbmmmgnflklegiafalpieckpihffn)
 
-### 替代工具（无 autoglm 时使用）
+2. **确认配置**：首次使用需确认：
+   - 浏览器偏好（Chrome / Edge）
+   - 信任模式（敏感操作是否自动执行）
+
+### 调用方式
+
+```bash
+autoclaw task=”任务描述”
+```
+
+### 关键规则
+
+| 规则 | 说明 |
+|------|------|
+| task 原样照抄 | 必须使用用户原话，不能擅自扩展或改写 |
+| 数量默认值 | 用户未指定数量时，默认收集 5 个 |
+| 结果获取 | Read `~/.openclaw-autoclaw/browser_result_{session_id}.md` |
+| 每轮限制 | 只能调用一次，不能自动重试 |
+| 超时设置 | shell timeout = 7200 秒 |
+| 禁止 poll | 不使用 process poll 获取结果 |
+
+### 岗位搜索示例
+
+```bash
+# 搜索技术岗
+autoclaw task=”打开BOSS直聘搜索Java后端实习岗位，收集前5个岗位的名称、公司、城市、薪资”
+
+# 搜索通用岗
+autoclaw task=”打开BOSS直聘搜索管培生校招岗位，收集前5个岗位的名称、公司、城市、学历要求”
+
+# 投递岗位
+autoclaw task=”打开岗位页面 https://www.zhipin.com/job_detail/xxx，填写投递表单并上传简历”
+```
+
+### 结果处理流程
+
+```
+1. 执行 autoclaw 命令，等待结束
+2. 从 shell 输出提取 Result: <文件路径>
+3. 用 Read 工具读取结果文件
+4. 从结果中提取岗位信息
+5. 写入 Excel 清单
+```
+
+### 遇到登录/验证码
+
+1. 浏览器暂停，返回 `[INTERACT_REQUIRED]`
+2. 告知用户手动完成登录
+3. 用户确认后，带 `session_id` 和 `tab_id` 继续
+
+---
+
+## 辅助工具
+
+| 工具 | 调用方式 | 适用场景 |
+|------|----------|----------|
+| autoglm-websearch | `python websearch.py “关键词”` | 快速搜索，无需登录 |
+| autoglm-open-link | `python open-link.py “URL”` | 读取岗位详情页 |
+
+---
+
+## 替代工具（autoglm 不可用时）
 
 | 工具 | 功能 | 适用场景 |
 |------|------|----------|
 | `mcp__tavily__tavily_search` | 网页搜索 | 岗位关键词搜索 |
 | `WebSearch` | 网页搜索 | 岗位关键词搜索 |
 | `WebFetch` | 获取网页内容 | 读取岗位详情页 |
-| `mcp__chrome-devtools__*` | Chrome DevTools 操作 | 浏览器自动化、表单填写 |
-| `mcp__plugin_playwright_playwright__*` | Playwright 浏览器操作 | 浏览器自动化、投递流程 |
-| `agent-browser` skill | 浏览器自动化 | 表单填写、投递操作 |
 
-### 无浏览器工具时
+---
+
+## 无浏览器工具时
 
 若以上工具均不可用：
 1. 输出搜索关键词和筛选规则
 2. 提供平台入口链接
 3. 生成待用户自行确认的岗位清单模板
-4. 不编造岗位或链接
+4. **不编造岗位或链接**
 
 ---
-
-## 搜索策略
-
-| 步骤 | 操作 | 说明 |
-|------|------|------|
-| 1 | 组合关键词 | 岗位名 + 实习/校招 + 城市 + 核心技术 |
-| 2 | 选择平台 | 优先用户指定平台，否则使用公开可访问渠道 |
-| 3 | 筛选结果 | 只保留有明确岗位信息的详情页 |
-| 4 | 记录信息 | 标题、公司、地点、平台、链接、检索日期 |
 
 ## 支持平台
 

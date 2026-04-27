@@ -163,10 +163,10 @@
 
 ```bash
 # 步骤 1：上传本地图片（若已是公网 URL 则跳过）
-python upload-mix.py "<本地图片路径>"
+python ~/.openclaw-autoclaw/skills/autoglm-file-upload/upload-mix.py "<本地图片路径>"
 
 # 从返回结果提取 oss_url 后进行识别
-python image-recognition.py "<image_url>" "识别证书内容：证书名称、获奖人、等级、时间、发证单位"
+python ~/.openclaw-autoclaw/skills/autoglm-image-recognition/image-recognition.py "<image_url>" "识别证书内容：证书名称、获奖人、等级、时间、发证单位"
 ```
 
 **识别提示词模板：**
