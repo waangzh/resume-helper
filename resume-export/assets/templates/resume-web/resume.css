@@ -91,7 +91,7 @@ body.is-editing .resume-page {
 }
 
 .resume-profile {
-  align-items: start;
+  align-items: center;
   display: grid;
   grid-template-columns: 98px minmax(0, 1fr);
   column-gap: 50px;
@@ -102,7 +102,6 @@ body.is-editing .resume-page {
 .resume-photo {
   align-items: center;
   background: #f8fafc;
-  border: 1px solid var(--rule);
   color: var(--muted);
   display: flex;
   font-size: 12px;
@@ -172,7 +171,7 @@ body.is-editing .resume-page {
 .resume-contact-item {
   align-items: baseline;
   display: grid;
-  grid-template-columns: 22px 86px minmax(0, 1fr);
+  grid-template-columns: 22px 60px minmax(0, 1fr);
   column-gap: 8px;
   min-width: 0;
   white-space: nowrap;
@@ -230,6 +229,56 @@ body.is-editing .resume-page {
   font-size: 14px;
   font-weight: 700;
   margin: 9px 0 4px;
+}
+
+.resume-project-title {
+  align-items: baseline;
+  color: var(--text);
+  display: flex;
+  font-size: 14px;
+  font-weight: 700;
+  justify-content: space-between;
+  margin: 9px 0 4px;
+}
+
+.resume-project-name {
+  flex: 0 0 auto;
+  text-align: left;
+}
+
+.resume-project-middle {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.resume-project-period {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.resume-award-item {
+  align-items: baseline;
+  color: var(--text);
+  display: flex;
+  font-size: 13.5px;
+  justify-content: space-between;
+  line-height: 1.62;
+  margin: 5px 0;
+}
+
+.resume-award-name {
+  flex: 0 1 auto;
+  text-align: left;
+}
+
+.resume-award-level {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.resume-award-period {
+  flex: 0 0 auto;
+  text-align: right;
 }
 
 .resume-paragraph {

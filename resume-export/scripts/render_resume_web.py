@@ -107,6 +107,70 @@ def is_education_section(title: str) -> bool:
     return "教育" in title
 
 
+def is_award_section(title: str) -> bool:
+    return "竞赛" in title or "奖项" in title
+
+
+def award_item_html(line: str) -> str:
+    """渲染竞赛奖项为左-中-右布局，全部加粗"""
+    items = contact_items(line)
+    if len(items) >= 3:
+        name, level, period = items[0], items[1], items[2]
+    elif len(items) == 2:
+        name, level, period = items[0], "", items[1]
+    else:
+        name, level, period = line, "", ""
+
+    if level:
+        return (
+            '<div class="resume-award-item">'
+            f'<strong class="resume-award-name">{inline_md(name)}</strong>'
+            f'<strong class="resume-award-level">{inline_md(level)}</strong>'
+            f'<strong class="resume-award-period">{inline_md(period)}</strong>'
+            "</div>"
+        )
+    else:
+        return (
+            '<div class="resume-award-item">'
+            f'<strong class="resume-award-name">{inline_md(name)}</strong>'
+            f'<strong class="resume-award-period">{inline_md(period)}</strong>'
+            "</div>"
+        )
+
+
+def parse_project_title(line: str) -> tuple[str, str, str]:
+    """解析项目标题，返回 (名称, 中间字段, 时间)"""
+    items = contact_items(line)
+    if len(items) >= 3:
+        # 格式：项目名  中间字段  时间
+        return items[0], items[1], items[2]
+    elif len(items) == 2:
+        # 格式：项目名  时间
+        return items[0], "", items[1]
+    else:
+        return line, "", ""
+
+
+def project_title_html(line: str) -> str:
+    """渲染项目标题为左-中-右布局"""
+    name, middle, period = parse_project_title(line)
+    if middle:
+        return (
+            '      <div class="resume-project-title">'
+            f'<span class="resume-project-name">{inline_md(name)}</span>'
+            f'<span class="resume-project-middle">{inline_md(middle)}</span>'
+            f'<span class="resume-project-period">{inline_md(period)}</span>'
+            "</div>"
+        )
+    else:
+        return (
+            '      <div class="resume-project-title">'
+            f'<span class="resume-project-name">{inline_md(name)}</span>'
+            f'<span class="resume-project-period">{inline_md(period)}</span>'
+            "</div>"
+        )
+
+
 def education_summary_html(line: str) -> str:
     items = contact_items(line)
     if len(items) >= 4:
@@ -119,7 +183,7 @@ def education_summary_html(line: str) -> str:
         cells = (line.strip(), "", "")
     return (
         '      <div class="resume-education-summary">'
-        f'<span>{inline_md(cells[0])}</span>'
+        f'<strong>{inline_md(cells[0])}</strong>'
         f'<strong>{inline_md(cells[1])}</strong>'
         f'<strong>{inline_md(cells[2])}</strong>'
         "</div>"
@@ -229,13 +293,18 @@ def markdown_to_resume_html(markdown: str) -> tuple[str, str]:
         elif line.startswith("### "):
             close_list()
             after_title = False
-            parts.append(f'      <h3 class="resume-subtitle">{inline_md(line[4:].strip())}</h3>')
+            parts.append(project_title_html(line[4:].strip()))
         elif line.startswith("- "):
             after_title = False
-            if not in_list:
-                parts.append('      <ul class="resume-list">')
-                in_list = True
-            parts.append(f"        <li>{inline_md(line[2:].strip())}</li>")
+            # 竞赛奖项部分使用特殊布局
+            if is_award_section(current_section):
+                close_list()
+                parts.append(award_item_html(line[2:].strip()))
+            else:
+                if not in_list:
+                    parts.append('      <ul class="resume-list">')
+                    in_list = True
+                parts.append(f"        <li>{inline_md(line[2:].strip())}</li>")
         elif line.startswith("> "):
             close_list()
             after_title = False

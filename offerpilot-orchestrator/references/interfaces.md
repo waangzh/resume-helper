@@ -1,5 +1,19 @@
 # OfferPilot 数据契约
 
+> 本文档定义跨 skill 的数据结构。Markdown 格式规范见 `resume-tailor/references/resume-standards.md`。
+
+## 格式契约分层
+
+| 层级 | 文件 | 职责 |
+|------|------|------|
+| Markdown 输出 | `resume-tailor/references/resume-standards.md` | 分隔符、模块结构、字段格式 |
+| 解析脚本 | `resume-export/scripts/render_resume_web.py` | Markdown → HTML 结构 |
+| CSS 样式 | `resume-export/assets/templates/resume-web/resume.css` | 字号、行高、间距、颜色 |
+
+**关键原则：** 间距、字号、颜色由 CSS 层控制，Markdown 层只负责结构和内容。
+
+---
+
 ## JobProfile
 
 - `target_role`: 岗位名称。

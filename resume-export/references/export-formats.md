@@ -1,5 +1,17 @@
 # 简历导出格式策略
 
+## 格式契约
+
+> Markdown 格式约束见 `resume-tailor/references/resume-standards.md`，HTML 视觉约束见 `layout-quality-constraints.md`。
+
+**三层职责：**
+
+| 层级 | 文件 | 职责 |
+|------|------|------|
+| Markdown 输出 | `resume-tailor/references/resume-standards.md` | 分隔符、模块结构、字段格式 |
+| 解析脚本 | `scripts/render_resume_web.py` | Markdown → HTML 结构 |
+| CSS 样式 | `assets/templates/resume-web/resume.css` | 字号、行高、间距、颜色 |
+
 ## 默认交付
 
 - `.html`：即时预览版本，可直接用浏览器打开，包含编辑、重置、上传照片和导出 PDF 按钮，也作为 PDF 打印源。
@@ -33,7 +45,7 @@
 - 中文字体优先微软雅黑、苹方、Noto Sans CJK 或等价系统字体。
 - 正文紧凑易读，标题层级清晰。
 - 项目 bullet 使用短句，避免多级嵌套。
-- 页眉基本信息必须按参考图结构生成：左侧照片，右侧依次为姓名、求职意向摘要、两列三行基础信息；所有文字使用普通 DOM 文本，不能放在图片中，照片区域只用于用户上传照片，不放说明文字。
+- 页眉基本信息必须按参考图结构生成：左侧照片，右侧依次为姓名、求职意向（只显示岗位）、两列三行基础信息；所有文字使用普通 DOM 文本，不能放在图片中，照片区域只用于用户上传照片，不放说明文字。
 
 ## 可选视觉风格
 
