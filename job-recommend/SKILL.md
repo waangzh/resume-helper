@@ -139,6 +139,76 @@ mcp__plugin_playwright_playwright__browser_fill_form selector=”#name” value=
 - 链接列必须是可点击超链接
 - 岗位详情页必须精准到具体岗位页面
 
+### 导出脚本使用
+
+使用 `scripts/export_job_recommendations.py` 导出岗位推荐清单：
+
+```bash
+python job-recommend/scripts/export_job_recommendations.py \
+  --input jobs.json \
+  --output 岗位推荐清单-管培生-20240315.xlsx
+```
+
+**参数说明：**
+
+| 参数 | 必填 | 说明 |
+|------|------|------|
+| `--input` | 是 | 输入文件路径，支持 CSV 或 JSON 格式 |
+| `--output` | 是 | 输出 Excel 文件路径 |
+
+**输入格式要求（JSON）：**
+
+```json
+[
+  {
+    "title": "管培生",
+    "company": "XX公司",
+    "city": "北京",
+    "platform": "BOSS直聘",
+    "education_requirement": "本科及以上",
+    "keywords": ["沟通", "团队协作"],
+    "url": "https://www.zhipin.com/job_detail/xxx",
+    "source": "BOSS直聘搜索",
+    "retrieved_at": "2024-03-15",
+    "reason": "能力要求匹配",
+    "status": "待用户确认"
+  }
+]
+```
+
+**输入格式要求（CSV）：**
+
+首行为字段名，支持中英文字段映射：
+
+```csv
+岗位名称,公司名称,城市,平台,学历要求,技术关键词,岗位详情页,来源,检索日期,推荐理由,状态
+管培生,XX公司,北京,BOSS直聘,本科及以上,沟通,团队协作,https://...,BOSS直聘搜索,2024-03-15,能力要求匹配,待用户确认
+```
+
+**字段映射：**
+
+| 表头 | 支持的字段名 |
+|------|--------------|
+| 岗位名称 | title, job_title, name |
+| 公司名称 | company, company_name |
+| 城市 | city, location |
+| 平台 | platform |
+| 学历要求 | education_requirement, education |
+| 技术关键词 | keywords, skills |
+| 岗位详情页 | url, link, job_url |
+| 来源 | source |
+| 检索日期 | retrieved_at, date |
+| 推荐理由 | reason |
+| 投递要求 | apply_requirements |
+| 状态 | status |
+| 备注 | note, notes |
+
+**依赖：**
+
+```bash
+pip install openpyxl
+```
+
 ## 确认后投递流程
 
 仅在用户明确表达”投递这几个岗位””确认投递第 1、3 个岗位”等指令后执行：
