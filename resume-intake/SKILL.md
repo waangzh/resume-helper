@@ -27,9 +27,9 @@ description: 简历与项目资料解析 Skill。用于用户上传或粘贴 PDF
 
 当用户上传证书照片时：
 
-1. 使用 AutoClaw 内置工具识别图片内容：
-   - `~/.openclaw-autoclaw/skills/autoglm-file-upload/upload-mix.py` 上传本地图片
-   - `~/.openclaw-autoclaw/skills/autoglm-image-recognition/image-recognition.py` 识别图片
+1. 使用 AutoClaw 内置图片识别工具识别证书内容：
+   - 使用 autoglm-file-upload 上传本地图片获取公网 URL
+   - 使用 autoglm-image-recognition 识别图片内容
 2. 提取关键信息：证书名称、获奖人、等级/分数、时间、发证单位
 3. 转换为结构化经历记录
 4. 低置信度内容标记为”待人工确认”

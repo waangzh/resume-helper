@@ -80,10 +80,10 @@
 
 ## 辅助工具
 
-| 工具 | 调用方式 | 适用场景 |
-|------|----------|----------|
-| autoglm-websearch | `python websearch.py “关键词”` | 快速搜索，无需登录 |
-| autoglm-open-link | `python open-link.py “URL”` | 读取岗位详情页 |
+| 工具 | 适用场景 |
+|------|----------|
+| autoglm-websearch | 快速关键词搜索，无需登录 |
+| autoglm-open-link | 读取岗位详情页正文 |
 
 ---
 

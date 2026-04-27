@@ -152,21 +152,18 @@
 
 ### 识别工具调用
 
-当收到证书照片时，使用 AutoClaw 内置工具进行识别：
+当收到证书照片时，使用 AutoClaw 内置图片识别工具：
 
-| 步骤 | 工具 | 说明 |
-|------|------|------|
-| 1 | `upload-mix.py` | 本地图片上传获取公网 URL |
-| 2 | `autoglm-image-recognition` | 调用图片识别 API |
+**使用方式：**
 
-**完整调用流程：**
+直接用自然语言描述任务，agent 会自动调用图片识别工具执行。
 
-```bash
-# 步骤 1：上传本地图片（若已是公网 URL 则跳过）
-python ~/.openclaw-autoclaw/skills/autoglm-file-upload/upload-mix.py "<本地图片路径>"
+**提示词示例：**
 
-# 从返回结果提取 oss_url 后进行识别
-python ~/.openclaw-autoclaw/skills/autoglm-image-recognition/image-recognition.py "<image_url>" "识别证书内容：证书名称、获奖人、等级、时间、发证单位"
+```
+使用 autoglm-file-upload 上传本地图片 <图片路径>
+
+使用 autoglm-image-recognition 识别这张证书图片，提取：证书名称、获奖人、等级、时间、发证单位
 ```
 
 **识别提示词模板：**
