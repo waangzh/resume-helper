@@ -36,6 +36,22 @@
 - `evidence`: 每条经历对应的来源片段、文件名或链接。
 - `uncertain_items`: 无法确认但影响生成质量的信息。
 
+### 竞赛经历字段（experiences.type = 竞赛）
+
+竞赛经历必须包含以下字段，确保名称规范：
+
+| 字段 | 必填 | 说明 |
+|------|------|------|
+| `name` | 是 | 用户提供的原始名称（如"蓝桥杯"） |
+| `original_name` | 是 | 原始名称副本，保留证据 |
+| `official_name` | 是 | 搜索补全后的官方全称（如"蓝桥杯全国软件和信息技术专业人才大赛"） |
+| `name_source` | 否 | 补全来源：官网、教育部名单、主办单位公告 |
+| `name_confidence` | 是 | 置信度：高/中/低。低置信度时 `official_name` 等于 `original_name` |
+| `award_level` | 是 | 获奖等级（省赛一等奖、国家级二等奖等） |
+| `time` | 是 | 获奖时间，格式 YYYY.MM |
+
+**简历输出时必须使用 `official_name`**，而非 `original_name`。
+
 ## TailoredResume
 
 - `basic_info`
