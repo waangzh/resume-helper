@@ -100,6 +100,17 @@
 - `status`: 待用户确认、用户已选择、已打开、已投递、投递受阻、已跳过。
 - `apply_requirements`: 登录、附件、在线表单、附加问题等。
 
+### 岗位推荐清单输出约束
+
+岗位推荐完成后**必须导出 Excel 文件**：
+
+| 字段 | 说明 |
+|------|------|
+| `excel_path` | Excel 文件路径，保存到 `简历材料/` 目录 |
+| `excel_filename` | 文件名格式：`岗位推荐清单-{目标岗位}-{YYYYMMDD}.xlsx` |
+
+**只有搜索工具完全不可用时**，才可跳过 Excel 导出，改为输出 Markdown 清单模板。
+
 ## ApplicationAttempt
 
 - `job`: 对应 `JobRecommendation`。
